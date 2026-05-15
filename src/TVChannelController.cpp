@@ -20,6 +20,15 @@ void TVChannelController::pressConfirm() {
 }
 
 void TVChannelController::pressFavorite() {
+    int ch = std::stoi(tuner_.getCurrentCH());
+    if (isFavorite(ch)) {
+        favorites_.erase(
+            std::remove(favorites_.begin(), favorites_.end(), ch),
+            favorites_.end());
+    } else {
+        favorites_.push_back(ch);
+        std::sort(favorites_.begin(), favorites_.end());
+    }
 }
 
 void TVChannelController::pressNextFavorite() {

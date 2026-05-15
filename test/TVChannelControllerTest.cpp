@@ -77,3 +77,53 @@ TEST_F(ControllerTest, PressNumber_Channel99_ChangesNormally) {
     // Then
     EXPECT_EQ("99", tuner.getCurrentCH());
 }
+
+// S2-1: 미등록 채널 추가
+TEST_F(ControllerTest, PressFavorite_NewChannel_AddedToList) {
+    // Given
+    tuner.setCH("12");
+    // When
+    ctrl.pressFavorite();
+    // Then
+    const auto& favs = ctrl.getFavoriteChannels();
+    EXPECT_NE(favs.end(), std::find(favs.begin(), favs.end(), 12));
+}
+
+// S2-2: 등록된 채널 삭제 (토글)
+TEST_F(ControllerTest, PressFavorite_ExistingChannel_RemovedFromList) {
+    // Given
+    tuner.setCH("12");
+    ctrl.pressFavorite();  // 추가
+    // When
+    ctrl.pressFavorite();  // 삭제
+    // Then
+    const auto& favs = ctrl.getFavoriteChannels();
+    EXPECT_EQ(favs.end(), std::find(favs.begin(), favs.end(), 12));
+}
+
+// S2-3: 토글 전체 시나리오
+TEST_F(ControllerTest, PressFavorite_ToggleScenario_ResultList) {
+    // Given / When
+    for (int ch : {12, 8, 37, 8, 6}) {
+        tuner.setCH(std::to_string(ch));
+        ctrl.pressFavorite();
+    }
+    // Then: {6, 12, 37} 만 남아야 함
+    const auto& favs = ctrl.getFavoriteChannels();
+    EXPECT_EQ(3u, favs.size());
+    EXPECT_NE(favs.end(), std::find(favs.begin(), favs.end(), 6));
+    EXPECT_NE(favs.end(), std::find(favs.begin(), favs.end(), 12));
+    EXPECT_NE(favs.end(), std::find(favs.begin(), favs.end(), 37));
+}
+
+// S2: 목록 정렬 검증
+TEST_F(ControllerTest, PressFavorite_MultipleChannels_ListIsSorted) {
+    // Given / When
+    for (int ch : {37, 6, 12}) {
+        tuner.setCH(std::to_string(ch));
+        ctrl.pressFavorite();
+    }
+    // Then
+    const auto& favs = ctrl.getFavoriteChannels();
+    EXPECT_TRUE(std::is_sorted(favs.begin(), favs.end()));
+}
