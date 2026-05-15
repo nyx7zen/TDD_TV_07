@@ -26,8 +26,7 @@ void TVChannelController::pressFavorite() {
             std::remove(favorites_.begin(), favorites_.end(), ch),
             favorites_.end());
     } else {
-        favorites_.push_back(ch);
-        std::sort(favorites_.begin(), favorites_.end());
+        addToFavorites(ch);
     }
 }
 

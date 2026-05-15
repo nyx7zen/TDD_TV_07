@@ -24,6 +24,13 @@ class TVChannelController {
 
     void applyChannel(int ch);
 
+    void addToFavorites(int ch) {
+        if (!isFavorite(ch)) {
+            favorites_.push_back(ch);
+            std::sort(favorites_.begin(), favorites_.end());
+        }
+    }
+
 public:
     explicit TVChannelController(ITuner& t) : tuner_(t) {}
 
@@ -38,9 +45,6 @@ public:
     }
 
     void addFavorite(int ch) {
-        if (!isFavorite(ch)) {
-            favorites_.push_back(ch);
-            std::sort(favorites_.begin(), favorites_.end());
-        }
+        addToFavorites(ch);
     }
 };
