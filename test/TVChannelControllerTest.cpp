@@ -127,3 +127,57 @@ TEST_F(ControllerTest, PressFavorite_MultipleChannels_ListIsSorted) {
     const auto& favs = ctrl.getFavoriteChannels();
     EXPECT_TRUE(std::is_sorted(favs.begin(), favs.end()));
 }
+
+// S3-1/S3-2: 정상 이동
+TEST_F(ControllerTest, PressNextFavorite_Normal_MovesToNextChannel) {
+    // Given
+    for (int ch : {1, 4, 12, 56}) ctrl.addFavorite(ch);
+    tuner.setCH("6");
+    // When
+    ctrl.pressNextFavorite();
+    // Then
+    EXPECT_EQ("12", tuner.getCurrentCH());
+}
+
+// S3-3: wrap-around
+TEST_F(ControllerTest, PressNextFavorite_AtLast_WrapsToFirst) {
+    // Given
+    for (int ch : {1, 4, 12, 56}) ctrl.addFavorite(ch);
+    tuner.setCH("56");
+    // When
+    ctrl.pressNextFavorite();
+    // Then
+    EXPECT_EQ("1", tuner.getCurrentCH());
+}
+
+// S3-4: 빈 목록
+TEST_F(ControllerTest, PressNextFavorite_EmptyList_NoChannelChange) {
+    // Given
+    tuner.setCH("6");
+    // When
+    ctrl.pressNextFavorite();
+    // Then
+    EXPECT_EQ("6", tuner.getCurrentCH());
+}
+
+// S3: 현재 채널이 목록 외 값일 때
+TEST_F(ControllerTest, PressNextFavorite_NotInList_MovesToNext) {
+    // Given
+    for (int ch : {1, 4, 12, 56}) ctrl.addFavorite(ch);
+    tuner.setCH("50");
+    // When
+    ctrl.pressNextFavorite();
+    // Then
+    EXPECT_EQ("56", tuner.getCurrentCH());
+}
+
+// S3: 목록에 채널 1개
+TEST_F(ControllerTest, PressNextFavorite_SingleItem_WrapsToItself) {
+    // Given
+    ctrl.addFavorite(12);
+    tuner.setCH("12");
+    // When
+    ctrl.pressNextFavorite();
+    // Then
+    EXPECT_EQ("12", tuner.getCurrentCH());
+}
