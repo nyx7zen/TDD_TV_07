@@ -1,0 +1,19 @@
+# CMake build directory
+/build/
+
+# CMake 캐시
+cmake_test_discovery_*.json
+CMakeCache.txt
+CMakeFiles/
+
+# 커버리지
+*.gcda
+*.gcno
+lcov.info
+
+# VSCode
+.vscode/
+
+# Windows
+Thumbs.db
+desktop.ini
