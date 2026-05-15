@@ -29,8 +29,24 @@ TDD_TV_XX/
     └── TVChannelControllerMockTest.cpp   # MockTuner 사용, 행위 기반 검증
 ```
 
----
+## 테스트 현황 (dev 브랜치)
 
+| 테스트 파일 | 테스트 수 | 상태 |
+|---|---|---|
+| FakeTunerTest | 6 | Passed |
+| TVChannelControllerTest (기능1 숫자버튼) | 7 | Passed |
+| TVChannelControllerTest (기능2 선호채널) | 4 | Passed |
+| TVChannelControllerTest (기능3 다음선호채널) | 5 | Passed |
+| TVChannelControllerMockTest | 5 | Passed |
+| 합계 | 27 | 전체 Passed |
+
+## 브랜치 전략
+
+- main: 초기 소스 (수정 금지)
+- dev: TDD 테스트 작성 (완료)
+- refactoring: 리팩토링 작업 (진행 예정)
+
+---
 ## TO-DO 리스트
 
 ### dev 브랜치 — 테스트 작성
@@ -125,3 +141,4 @@ TDD_TV_XX/
 
 - [ ] lcov 측정 후 미커버 라인 확인 → 누락 테스트 보완
 - [ ] 80% 이상 달성 확인 후 최종 push
+
