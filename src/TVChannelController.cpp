@@ -6,7 +6,7 @@ void TVChannelController::pressNumber(int digit) {
         inputBuffer_ = digit;
     } else {
         int ch = inputBuffer_ * 10 + digit;
-        inputBuffer_ = -1;
+        clearBuffer();
         applyChannel(ch);
     }
 }
@@ -14,7 +14,7 @@ void TVChannelController::pressNumber(int digit) {
 void TVChannelController::pressConfirm() {
     if (inputBuffer_ != -1) {
         int ch = inputBuffer_;
-        inputBuffer_ = -1;
+        clearBuffer();
         applyChannel(ch);
     }
 }
@@ -45,7 +45,7 @@ void TVChannelController::pressNextFavorite() {
 }
 
 void TVChannelController::pressOther() {
-    inputBuffer_ = -1;
+    clearBuffer();
 }
 
 void TVChannelController::applyChannel(int ch) {

@@ -18,6 +18,10 @@ class TVChannelController {
             favorites_.end(), ch) != favorites_.end();
     }
 
+    void clearBuffer() {
+        inputBuffer_ = -1;
+    }
+
     void applyChannel(int ch);
 
 public:
