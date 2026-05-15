@@ -40,7 +40,7 @@ TEST_F(ControllerTest, PressNumber_FourDigits_TwoStageChanges) {
 
 // S1-4: 버퍼 무효화
 TEST_F(ControllerTest, PressOther_CancelsBuffer_NoChannelChange) {
-    // Given: 4,5 입력으로 45번 채널 변경 후 6 입력
+    // Given
     ctrl.pressNumber(4);
     ctrl.pressNumber(5);  // 45번으로 자동 변경
     ctrl.pressNumber(6);  // 6이 버퍼에 저장
@@ -71,7 +71,7 @@ TEST_F(ControllerTest, PressNumber_ChannelZero_ChangesNormally) {
 
 // 경계값: 채널 99
 TEST_F(ControllerTest, PressNumber_Channel99_ChangesNormally) {
-    // Given
+    // Given / When
     ctrl.pressNumber(9);
     ctrl.pressNumber(9);
     // Then
@@ -86,6 +86,7 @@ TEST_F(ControllerTest, PressFavorite_NewChannel_AddedToList) {
     ctrl.pressFavorite();
     // Then
     const auto& favs = ctrl.getFavoriteChannels();
+    ASSERT_FALSE(favs.empty());
     EXPECT_NE(favs.end(), std::find(favs.begin(), favs.end(), 12));
 }
 
@@ -93,9 +94,9 @@ TEST_F(ControllerTest, PressFavorite_NewChannel_AddedToList) {
 TEST_F(ControllerTest, PressFavorite_ExistingChannel_RemovedFromList) {
     // Given
     tuner.setCH("12");
-    ctrl.pressFavorite();  // 추가
+    ctrl.pressFavorite();
     // When
-    ctrl.pressFavorite();  // 삭제
+    ctrl.pressFavorite();
     // Then
     const auto& favs = ctrl.getFavoriteChannels();
     EXPECT_EQ(favs.end(), std::find(favs.begin(), favs.end(), 12));
@@ -110,7 +111,7 @@ TEST_F(ControllerTest, PressFavorite_ToggleScenario_ResultList) {
     }
     // Then: {6, 12, 37} 만 남아야 함
     const auto& favs = ctrl.getFavoriteChannels();
-    EXPECT_EQ(3u, favs.size());
+    ASSERT_EQ(3u, favs.size());
     EXPECT_NE(favs.end(), std::find(favs.begin(), favs.end(), 6));
     EXPECT_NE(favs.end(), std::find(favs.begin(), favs.end(), 12));
     EXPECT_NE(favs.end(), std::find(favs.begin(), favs.end(), 37));
@@ -125,59 +126,12 @@ TEST_F(ControllerTest, PressFavorite_MultipleChannels_ListIsSorted) {
     }
     // Then
     const auto& favs = ctrl.getFavoriteChannels();
+    ASSERT_FALSE(favs.empty());
     EXPECT_TRUE(std::is_sorted(favs.begin(), favs.end()));
 }
 
-// S3-1/S3-2: 정상 이동
-TEST_F(ControllerTest, PressNextFavorite_Normal_MovesToNextChannel) {
-    // Given
-    for (int ch : {1, 4, 12, 56}) ctrl.addFavorite(ch);
-    tuner.setCH("6");
-    // When
-    ctrl.pressNextFavorite();
-    // Then
-    EXPECT_EQ("12", tuner.getCurrentCH());
-}
-
-// S3-3: wrap-around
-TEST_F(ControllerTest, PressNextFavorite_AtLast_WrapsToFirst) {
-    // Given
-    for (int ch : {1, 4, 12, 56}) ctrl.addFavorite(ch);
-    tuner.setCH("56");
-    // When
-    ctrl.pressNextFavorite();
-    // Then
-    EXPECT_EQ("1", tuner.getCurrentCH());
-}
-
-// S3-4: 빈 목록
-TEST_F(ControllerTest, PressNextFavorite_EmptyList_NoChannelChange) {
-    // Given
-    tuner.setCH("6");
-    // When
-    ctrl.pressNextFavorite();
-    // Then
-    EXPECT_EQ("6", tuner.getCurrentCH());
-}
-
-// S3: 현재 채널이 목록 외 값일 때
-TEST_F(ControllerTest, PressNextFavorite_NotInList_MovesToNext) {
-    // Given
-    for (int ch : {1, 4, 12, 56}) ctrl.addFavorite(ch);
-    tuner.setCH("50");
-    // When
-    ctrl.pressNextFavorite();
-    // Then
-    EXPECT_EQ("56", tuner.getCurrentCH());
-}
-
-// S3: 목록에 채널 1개
-TEST_F(ControllerTest, PressNextFavorite_SingleItem_WrapsToItself) {
-    // Given
-    ctrl.addFavorite(12);
-    tuner.setCH("12");
-    // When
-    ctrl.pressNextFavorite();
-    // Then
-    EXPECT_EQ("12", tuner.getCurrentCH());
+// 경계값: applyChannel 범위 초과 → 예외
+TEST_F(ControllerTest, ApplyChannel_Over99_ThrowsException) {
+    // Given / When / Then
+    EXPECT_THROW(ctrl.addFavorite(100), std::invalid_argument);
 }

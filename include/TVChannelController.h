@@ -2,6 +2,7 @@
 #include "ITuner.h"
 #include <vector>
 #include <algorithm>
+#include <stdexcept>
 #include <string>
 
 class TVChannelController {
@@ -18,7 +19,25 @@ class TVChannelController {
             favorites_.end(), ch) != favorites_.end();
     }
 
+    void clearBuffer() {
+        inputBuffer_ = -1;
+    }
+
     void applyChannel(int ch);
+
+    void addToFavorites(int ch) {
+        if (!isFavorite(ch)) {
+            favorites_.push_back(ch);
+            std::sort(favorites_.begin(), favorites_.end());
+        }
+    }
+
+    int findNextFavorite(int cur) const {
+        auto it = std::upper_bound(
+            favorites_.begin(), favorites_.end(), cur);
+        return (it != favorites_.end())
+            ? *it : favorites_.front();
+    }
 
 public:
     explicit TVChannelController(ITuner& t) : tuner_(t) {}
@@ -34,9 +53,8 @@ public:
     }
 
     void addFavorite(int ch) {
-        if (!isFavorite(ch)) {
-            favorites_.push_back(ch);
-            std::sort(favorites_.begin(), favorites_.end());
-        }
+        if (!isValidChannel(ch))
+            throw std::invalid_argument("Invalid channel: " + std::to_string(ch));
+        addToFavorites(ch);
     }
 };
