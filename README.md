@@ -40,11 +40,22 @@ TDD_TV_XX/
 | TVChannelControllerMockTest | 5 | Passed |
 | 합계 | 27 | 전체 Passed |
 
+## 리팩토링 현황 (refactoring 브랜치)
+
+| 항목 | 상태 |
+|---|---|
+| clearBuffer() 메서드 추출 | 완료 |
+| addToFavorites() 메서드 추출 | 완료 |
+| findNextFavorite() 메서드 추출 | 완료 |
+| isValidChannel() 책임 정리 | 진행 예정 |
+| isFavorite() 재사용 정리 | 진행 예정 |
+| Given-When-Then 주석 일관성 점검 | 진행 예정 |
+
 ## 브랜치 전략
 
 - main: 초기 소스 (수정 금지)
 - dev: TDD 테스트 작성 (완료)
-- refactoring: 리팩토링 작업 (진행 예정)
+- refactoring: 리팩토링 작업 (진행 중)
 
 ---
 ## TO-DO 리스트
