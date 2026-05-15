@@ -31,6 +31,13 @@ class TVChannelController {
         }
     }
 
+    int findNextFavorite(int cur) const {
+        auto it = std::upper_bound(
+            favorites_.begin(), favorites_.end(), cur);
+        return (it != favorites_.end())
+            ? *it : favorites_.front();
+    }
+
 public:
     explicit TVChannelController(ITuner& t) : tuner_(t) {}
 

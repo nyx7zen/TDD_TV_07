@@ -34,13 +34,7 @@ void TVChannelController::pressNextFavorite() {
     if (favorites_.empty()) return;
 
     int cur = std::stoi(tuner_.getCurrentCH());
-    auto it = std::upper_bound(
-        favorites_.begin(), favorites_.end(), cur);
-
-    int next = (it != favorites_.end())
-        ? *it : favorites_.front();
-
-    applyChannel(next);
+    applyChannel(findNextFavorite(cur));
 }
 
 void TVChannelController::pressOther() {
