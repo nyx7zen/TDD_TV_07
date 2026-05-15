@@ -129,3 +129,9 @@ TEST_F(ControllerTest, PressFavorite_MultipleChannels_ListIsSorted) {
     ASSERT_FALSE(favs.empty());
     EXPECT_TRUE(std::is_sorted(favs.begin(), favs.end()));
 }
+
+// 경계값: applyChannel 범위 초과 → 예외
+TEST_F(ControllerTest, ApplyChannel_Over99_ThrowsException) {
+    // Given / When / Then
+    EXPECT_THROW(ctrl.addFavorite(100), std::invalid_argument);
+}

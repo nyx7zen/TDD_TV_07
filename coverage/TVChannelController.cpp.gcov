@@ -1,0 +1,52 @@
+        -:    0:Source:C:/DEV/week1_day5/TDD_TV_07/src/TVChannelController.cpp
+        -:    0:Graph:CMakeFiles/tv_controller.dir/src/TVChannelController.cpp.gcno
+        -:    0:Data:CMakeFiles/tv_controller.dir/src/TVChannelController.cpp.gcda
+        -:    0:Runs:21
+        -:    1:#include "TVChannelController.h"
+        -:    2:#include <stdexcept>
+        -:    3:
+       18:    4:void TVChannelController::pressNumber(int digit) {
+       18:    5:    if (inputBuffer_ == -1) {
+       11:    6:        inputBuffer_ = digit;
+        -:    7:    } else {
+        7:    8:        int ch = inputBuffer_ * 10 + digit;
+        7:    9:        clearBuffer();
+        7:   10:        applyChannel(ch);
+        -:   11:    }
+       18:   12:}
+        -:   13:
+        3:   14:void TVChannelController::pressConfirm() {
+        3:   15:    if (inputBuffer_ != -1) {
+        3:   16:        int ch = inputBuffer_;
+        3:   17:        clearBuffer();
+        3:   18:        applyChannel(ch);
+        -:   19:    }
+        3:   20:}
+        -:   21:
+       12:   22:void TVChannelController::pressFavorite() {
+       12:   23:    int ch = std::stoi(tuner_.getCurrentCH());
+       12:   24:    if (isFavorite(ch)) {
+        2:   25:        favorites_.erase(
+        2:   26:            std::remove(favorites_.begin(), favorites_.end(), ch),
+        4:   27:            favorites_.end());
+        -:   28:    } else {
+       10:   29:        addToFavorites(ch);
+        -:   30:    }
+       12:   31:}
+        -:   32:
+        2:   33:void TVChannelController::pressNextFavorite() {
+        2:   34:    if (favorites_.empty()) return;
+        -:   35:
+        1:   36:    int cur = std::stoi(tuner_.getCurrentCH());
+        1:   37:    applyChannel(findNextFavorite(cur));
+        -:   38:}
+        -:   39:
+        1:   40:void TVChannelController::pressOther() {
+        1:   41:    clearBuffer();
+        1:   42:}
+        -:   43:
+       11:   44:void TVChannelController::applyChannel(int ch) {
+       11:   45:    if (!isValidChannel(ch))
+    #####:   46:        throw std::invalid_argument("Invalid channel: " + std::to_string(ch));
+       11:   47:    tuner_.setCH(std::to_string(ch));
+       11:   48:}

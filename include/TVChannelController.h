@@ -2,6 +2,7 @@
 #include "ITuner.h"
 #include <vector>
 #include <algorithm>
+#include <stdexcept>
 #include <string>
 
 class TVChannelController {
@@ -52,6 +53,8 @@ public:
     }
 
     void addFavorite(int ch) {
+        if (!isValidChannel(ch))
+            throw std::invalid_argument("Invalid channel: " + std::to_string(ch));
         addToFavorites(ch);
     }
 };
