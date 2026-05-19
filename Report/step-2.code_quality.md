@@ -2,12 +2,14 @@
 
 | 항목 | 내용 |
 |------|------|
+| 단계 | Step 2 — 코드 품질 분석 |
 | 분석 대상 | `TVChannelController`, `FakeTuner`, `ITuner` (연관 `MockTuner`) |
 | 기준 문서 | `README.md`, `Report/step-1.requirements_analysis.md` |
 | 기술 스택 | C++17, CMake, Google Test / GMock |
 | 코드 상태 | `FakeTuner` 구현 완료, `TVChannelController.cpp` **전 메서드 스텁** |
 | 관점 | 시니어 C++ 아키텍트 + 모던 C++ 리뷰어 |
 | 작성일 | 2026-05-19 |
+| 동기 문서 | `docs/code_quality_report.md` |
 
 ---
 
