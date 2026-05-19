@@ -31,6 +31,14 @@ add_executable(controller_mock_test test/TVChannelControllerMockTest.cpp)
 target_link_libraries(controller_mock_test tv_controller GTest::gtest_main GTest::gmock_main)
 
 include(GoogleTest)
-gtest_discover_tests(fake_tuner_test)
-gtest_discover_tests(controller_test)
-gtest_discover_tests(controller_mock_test)
+# Windows: gtest_discover_tests per-case filters break on non-ASCII test names
+# (CTest passes mangled --gtest_filter → 0 tests run, false Pass). Register whole executables.
+if(WIN32)
+    add_test(NAME fake_tuner_test COMMAND fake_tuner_test)
+    add_test(NAME controller_test COMMAND controller_test)
+    add_test(NAME controller_mock_test COMMAND controller_mock_test)
+else()
+    gtest_discover_tests(fake_tuner_test)
+    gtest_discover_tests(controller_test)
+    gtest_discover_tests(controller_mock_test)
+endif()
