@@ -30,6 +30,12 @@ target_link_libraries(controller_test tv_controller GTest::gtest_main)
 add_executable(controller_mock_test test/TVChannelControllerMockTest.cpp)
 target_link_libraries(controller_mock_test tv_controller GTest::gtest_main GTest::gmock_main)
 
+add_executable(golden_test test/TVChannelGoldenTest.cpp)
+target_link_libraries(golden_test tv_controller GTest::gtest_main)
+target_compile_definitions(golden_test PRIVATE
+    GOLDEN_DIR="${CMAKE_SOURCE_DIR}/test/golden"
+)
+
 include(GoogleTest)
 # Windows: gtest_discover_tests per-case filters break on non-ASCII test names
 # (CTest passes mangled --gtest_filter → 0 tests run, false Pass). Register whole executables.
@@ -37,8 +43,10 @@ if(WIN32)
     add_test(NAME fake_tuner_test COMMAND fake_tuner_test)
     add_test(NAME controller_test COMMAND controller_test)
     add_test(NAME controller_mock_test COMMAND controller_mock_test)
+    add_test(NAME golden_test COMMAND golden_test)
 else()
     gtest_discover_tests(fake_tuner_test)
     gtest_discover_tests(controller_test)
     gtest_discover_tests(controller_mock_test)
+    gtest_discover_tests(golden_test)
 endif()
