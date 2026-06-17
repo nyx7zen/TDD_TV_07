@@ -1,0 +1,10 @@
+# README smoke: channel input, favorites, next favorite
+N1
+C
+N3
+N4
+T 5
+F
+@FAV 1,4,12,56
+@CH 6
+NF

@@ -9,7 +9,9 @@ CMakeFiles/
 # 커버리지
 *.gcda
 *.gcno
+*.gcov
 lcov.info
+/build_cov/
 
 # VSCode
 .vscode/

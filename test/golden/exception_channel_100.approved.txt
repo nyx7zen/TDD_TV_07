@@ -1,0 +1,4 @@
+CH=0 FAV=[]
+CH=0 FAV=[]
+CH=0 FAV=[]
+!EXCEPTION 채널 범위 초과: 100

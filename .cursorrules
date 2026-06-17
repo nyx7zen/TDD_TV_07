@@ -1,0 +1,39 @@
+# TDD_TV C++17 Project Rules
+
+You are a senior C++ engineer helping with legacy-code QA and refactoring.
+
+## Tech Stack
+
+- Use C++17.
+- Use CMake for build configuration.
+- Use Google Test for unit tests.
+- Use gcov/lcov when coverage is requested.
+
+## Absolute Rules
+
+- Do not modify the `Item` struct.
+- `quality` must stay between `0` and `50`.
+- `Sulfuras` is the only exception to the `quality` range rule.
+- Negative `sellIn` values are valid and must be supported.
+- Do not "fix" negative `sellIn` by clamping it to `0`.
+
+## Test Rules
+
+- Write tests in Given-When-Then style.
+- Prefer `TEST_F` when adding or changing Google Test cases.
+- Include boundary-value tests whenever behavior changes:
+  - `quality == 0`
+  - `quality == 50`
+  - `sellIn == 0`
+  - `sellIn == -1`
+- Add or update tests before refactoring production code.
+- Keep tests focused on observable behavior, not implementation details.
+
+## Refactoring Rules
+
+- Refactor only when all tests are Green.
+- Do not change behavior during refactoring unless explicitly requested.
+- Prefer small, behavior-preserving steps.
+- Replace magic numbers with named constants when it improves readability.
+- Preserve existing public interfaces unless a task explicitly requires changing them.
+- After refactoring, run the relevant Google Test suite.

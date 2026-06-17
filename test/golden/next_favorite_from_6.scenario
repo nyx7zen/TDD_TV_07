@@ -1,0 +1,4 @@
+# T-16: favorites {1,4,12,56}, current 6 -> 12
+@FAV 1,4,12,56
+@CH 6
+NF
