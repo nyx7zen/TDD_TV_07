@@ -1,0 +1,18 @@
+=== 기능 1: 숫자 버튼 채널 변경 ===
+pressNumber(1) + pressConfirm() -> 1
+pressNumber(1,2) -> 12
+pressNumber(1,2,3,4) -> 34
+pressNumber(4,5,6) + pressOther() -> 45
+pressNumber(0,7) -> 7
+
+=== 기능 2: 선호 채널 토글 ===
+pressFavorite() ch=12 -> 목록: {12}
+pressFavorite() ch=8 -> 목록: {8,12}
+pressFavorite() ch=37 -> 목록: {8,12,37}
+pressFavorite() ch=8 -> 목록: {12,37}
+pressFavorite() ch=6 -> 목록: {6,12,37}
+
+=== 기능 3: 다음 선호 채널 ===
+현재 6 -> pressNextFavorite() -> 12
+현재 56 -> pressNextFavorite() -> 1 (wrap-around)
+빈 목록 -> pressNextFavorite() -> 6 (변화 없음)
